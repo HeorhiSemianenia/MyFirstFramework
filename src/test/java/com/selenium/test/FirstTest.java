@@ -1,3 +1,5 @@
+package com.selenium.test;
+
 import com.selenium.test.webtestbase.WebDriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
