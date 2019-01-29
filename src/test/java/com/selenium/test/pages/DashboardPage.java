@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class DashboardPage extends BasePage {
 
-    private static final String LOGIN_PAGE_URL = "https://dev.integrivideo.com/app/projects";
+    private static final String DASHBOARD_PAGE_URL = "https://dev.integrivideo.com/app/projects";
 
     @FindBy(xpath = "//div[@id='statistics-column']/h2")
     private WebElement statisticsTitle;
@@ -17,7 +17,7 @@ public class DashboardPage extends BasePage {
 
     @Override
     protected void openPage() {
-        getDriver().get(LOGIN_PAGE_URL);
+        getDriver().get(DASHBOARD_PAGE_URL);
     }
 
     @Override
