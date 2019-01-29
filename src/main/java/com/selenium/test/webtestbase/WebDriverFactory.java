@@ -1,18 +1,21 @@
 package com.selenium.test.webtestbase;
 
 import com.selenium.test.configuration.TestsConfig;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WebDriverFactory {
     private static WebDriver driver;
-
+    private static String testName;
 
     public static WebDriver getDriver() {
         if (driver != null) {
@@ -25,15 +28,18 @@ public class WebDriverFactory {
 
     public static void startBrowser() {
         Browser browser = TestsConfig.getConfig().getBrowser();
-        switch (browser.getBrowserName()){
+        MutableCapabilities options;
+        switch (browser.getBrowserName()) {
             case "firefox":
-                FirefoxOptions options = new FirefoxOptions();
                 driver = new FirefoxDriver();
                 break;
             case "chrome":
-                driver = new ChromeDriver();
+                ChromeOptions optionsChrome = new ChromeOptions();
+                optionsChrome.addArguments("disable-infobars");
+                driver = new ChromeDriver(optionsChrome);
                 break;
-            default: throw new IllegalStateException("Unsupported browser type");
+            default:
+                throw new IllegalStateException("Unsupported browser type");
         }
         driver.manage().window().maximize();
     }
@@ -46,9 +52,34 @@ public class WebDriverFactory {
         }
     }
 
-    public static void takeScreenShot() {
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-// Now you can do whatever you need to do with it, for example copy somewhere
-//        FileUtils.copyFile(scrFile, new File("c:\\tmp\\screenshot.png"));
+    /**
+     * Define path for Screenshot file.
+     */
+    private static String getScreenshotSavePath(String instanceName) {
+        File dir = new File(System.getProperty("user.dir") + File.separator + "screenshot" + File.separator + instanceName);
+        dir.mkdirs();
+        return dir.getAbsolutePath();
     }
+
+    /**
+     * Take Screenshot on failure.
+     */
+    public static void getScreenshot(String instanceName) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String date = sdf.format(new Date());
+        String ext = ".png";
+        String path = getScreenshotSavePath(instanceName) + File.separator + date + ext;
+
+        try {
+            if (driver instanceof TakesScreenshot) {
+                File tmpFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                org.openqa.selenium.io.FileHandler.copy(tmpFile, new File(path));
+//                log.error("Captured Screenshot for Failure: "+path);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
