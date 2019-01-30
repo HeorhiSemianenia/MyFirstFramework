@@ -1,7 +1,6 @@
 package com.selenium.test;
 
 import com.selenium.test.listeners.ScreenShotOnFailListener;
-import com.selenium.test.pages.LoginPage;
 import com.selenium.test.webtestbase.WebDriverFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;

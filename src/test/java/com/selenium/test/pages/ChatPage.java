@@ -3,7 +3,9 @@ package com.selenium.test.pages;
 import com.selenium.test.utils.TimeUtils;
 import com.selenium.test.utils.TimeUtilsNew;
 import com.selenium.test.webtestbase.BasePage;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 public class ChatPage extends BasePage {
@@ -13,8 +15,7 @@ public class ChatPage extends BasePage {
     @FindBy(xpath = "//button[@class='btn']/span")
     private WebElement statisticsTitle;
 
-    @FindBy(xpath = "//div[@class='integri-chat-input']//textarea")
-    private WebElement inputMessageField;
+    private static final String inputMessageFieldCSS = "integri-chat-input textarea";
 
     @FindBy(xpath = "//div[@class='integri-chat-action-buttons']//span[contains(@class,'plane')]")
     private WebElement sendMessageButton;
@@ -34,7 +35,9 @@ public class ChatPage extends BasePage {
     }
 
     public void addMessage(String text){
-        inputMessageField.sendKeys(text);
+        JavascriptExecutor jse = (JavascriptExecutor) super.getDriver();
+        TimeUtilsNew.waitForSeconds(2);
+        jse.executeScript(String.format("document.querySelector(\".%s\").value=\"%s\"", inputMessageFieldCSS, text));
         sendMessageButton.click();
         TimeUtilsNew.waitForSeconds(4);
     }
