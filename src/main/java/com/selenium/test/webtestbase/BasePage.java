@@ -1,7 +1,7 @@
 package com.selenium.test.webtestbase;
 
 
-import com.selenium.test.utils.TimeUtilsNew;
+import com.selenium.test.utils.TimeUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -24,7 +24,7 @@ public abstract class BasePage {
         int secondsCount = 0;
         boolean isPageOpenedIndicator = isPageOpened();
         while (!isPageOpenedIndicator && secondsCount < WAIT_FOR_PAGE_LOAD_IN_SECONDS) {
-            TimeUtilsNew.waitForSeconds(1);
+            TimeUtils.waitForSeconds(1);
             secondsCount++;
             isPageOpenedIndicator = isPageOpened();
         }

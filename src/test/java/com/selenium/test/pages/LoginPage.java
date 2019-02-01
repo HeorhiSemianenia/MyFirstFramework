@@ -1,7 +1,6 @@
 package com.selenium.test.pages;
 
 import com.selenium.test.utils.TimeUtils;
-import com.selenium.test.utils.TimeUtilsNew;
 import com.selenium.test.webtestbase.BasePage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -39,9 +38,9 @@ public class LoginPage extends BasePage {
     public DashboardPage loginInto(){
         email.sendKeys("integriuser2@mailinator.com");
         password.sendKeys("integripassword");
-        TimeUtilsNew.waitForSeconds(4);
+        TimeUtils.waitForSeconds(4);
         loginButton.click();
-        TimeUtilsNew.waitForSeconds(4);
+        TimeUtils.waitForSeconds(4);
         return new DashboardPage();
     }
 }
